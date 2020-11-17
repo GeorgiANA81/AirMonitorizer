@@ -101,16 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
                     case MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-                        switch (arduinoMsg.toLowerCase()){
-                            case "led is turned on":
-                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOn));
-                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
-                                break;
-                            case "led is turned off":
-                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
-                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
-                                break;
-                        }
+//                        switch (arduinoMsg.toLowerCase()){
+//                            case "led is turned on":
+//                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOn));
+//                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
+//                                break;
+//                            case "led is turned off":
+//                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
+//                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
+//                                break;
+//                        }
+                        imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
+                        textViewInfo.setText("Arduino Message : " + arduinoMsg);
                         break;
                 }
             }
@@ -136,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
                     case "turn on":
                         buttonToggle.setText("Turn Off");
                         // Command to turn on LED on Arduino. Must match with the command in Arduino code
-                        cmdText = "<turn on>";
+                        cmdText = "t";
                         break;
                     case "turn off":
                         buttonToggle.setText("Turn On");
                         // Command to turn off LED on Arduino. Must match with the command in Arduino code
-                        cmdText = "<turn off>";
+                        cmdText = "h";
                         break;
                 }
                 // Send command to Arduino board
