@@ -30,6 +30,7 @@ import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_ENABLE_BT = 1;
     private String deviceName = null;
     private String deviceAddress;
     public static Handler handler;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             the code will call a new thread to create a bluetooth connection to the
             selected device (see the thread code below)
              */
+
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             createConnectThread = new CreateConnectThread(bluetoothAdapter,deviceAddress);
             createConnectThread.start();
