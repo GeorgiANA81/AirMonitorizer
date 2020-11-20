@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#66FF66">
     <TextView
         android:id="@+id/loginscrn"
         android:layout_width="wrap_content"
@@ -15,45 +16,45 @@
         android:id="@+id/fstTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="20dp"
-        android:text="Full Name"/>
+        android:text="Full Name"
+        android:layout_gravity="center"/>
     <EditText
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
+        android:layout_gravity="center"
         android:ems="10"/>
     <TextView
         android:id="@+id/secTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
-        android:layout_marginLeft="100dp" />
+        android:layout_gravity="center" />
     <EditText
         android:id="@+id/txtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
+        android:layout_gravity="center"
         android:ems="10" />
     <TextView
         android:id="@+id/thirdTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
-        android:layout_marginLeft="100dp" />
+        android:layout_gravity="center" />
     <EditText
         android:id="@+id/txtPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
+        android:layout_gravity="center"
         android:inputType="textPassword"
         android:ems="10" />
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
+        android:layout_gravity="center"
         android:text="Register" />
     <TextView android:id="@+id/lnkLogin"
         android:layout_width="match_parent"
@@ -62,6 +63,5 @@
         android:text="Already Registered? Login here"
         android:gravity="center"
         android:textSize="20dp"
-        android:textColor="#3F51B5"
-        android:onClick="test"/>
+        android:textColor="#FF000000"/>
 </LinearLayout>
