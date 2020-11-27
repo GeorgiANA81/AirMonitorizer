@@ -121,6 +121,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                        public void onComplete(@NonNull Task<Void> task) {
                                            if(task.isSuccessful()){
 //                                               redirect to user profile
+                                               Toast.makeText(RegistrationActivity.this, "Congratulations!", Toast.LENGTH_LONG).show();
                                                startActivity(new Intent(RegistrationActivity.this, HomeActivity.class));
                                            }
                                            else{
