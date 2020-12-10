@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="left"
+    android:layout_marginTop="100dp"
+    android:background="#FFA9D873"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_welcome_user">
+
+    <Button
+        android:id="@+id/buttonCreateProfile"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:text="Create Profile"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonViewProfile"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:text="View Profile"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonSetParameters"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:text="Set Parameters"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonViewMeasurements"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:text="View Measurements"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonViewHistory"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:text="View History"
+        android:textColor="@android:color/background_light"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+</LinearLayout>

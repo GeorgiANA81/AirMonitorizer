@@ -22,4 +22,8 @@ public class HomeActivity extends AppCompatActivity {
     public void openRegisterPage(View view) {
         startActivity(new Intent(this,RegistrationActivity.class));
     }
+
+    public void openWelcomeUserPage(View view) {
+        startActivity(new Intent(this, WelcomeUserActivity.class));
+    }
 }

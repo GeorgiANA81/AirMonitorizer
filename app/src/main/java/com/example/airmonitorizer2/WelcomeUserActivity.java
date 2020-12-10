@@ -1,6 +1,9 @@
 package com.example.airmonitorizer2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -9,40 +12,170 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class WelcomeUserActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+
+    GaugeView gaugeView;
+    private float degree = -225;
+    private float sweepAngleControl = 0;
+    private float sweepAngleFirstChart = 1;
+    private float sweepAngleSecondChart = 1;
+    private float sweepAngleThirdChart = 1;
+    private boolean isInProgress = false;
+    private boolean resetMode = false;
+    private boolean canReset = false;
+
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_user);
+         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
+         gaugeView.setRotateDegree(degree);
+         startRunning();
 
-        FrameLayout welcomeFrame = new FrameLayout(this);
-        /*welcomeFrame.setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                                     FrameLayout.LayoutParams.MATCH_PARENT));*/
-        final TextView welcomeUser = findViewById(R.id.welcomeUser);
-        welcomeFrame.addView(welcomeUser);
-        setContentView(welcomeFrame);
+        final Button buttonCreateProfile = findViewById(R.id.buttonCreateProfile);
+        buttonCreateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //Intent intent = new Intent(WelcomeUserActivity.this,);
 
-        FrameLayout optionsFrame = new FrameLayout(this);
-        /*optionsFrame.setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                                     FrameLayout.LayoutParams.MATCH_PARENT));*/
-        final Button createProfile = findViewById(R.id.buttonCreateProfile);
-        final Button viewProfile = findViewById(R.id.buttonViewProfile);
-        final Button setParameters = findViewById(R.id.buttonSetParameters);
-        final Button viewMeasurements = findViewById(R.id.buttonViewMeasurements);
-        final Button viewHistory = findViewById(R.id.buttonViewHistory);
-        welcomeFrame.addView(createProfile);
-        welcomeFrame.addView(viewProfile);
-        welcomeFrame.addView(setParameters);
-        welcomeFrame.addView(viewMeasurements);
-        welcomeFrame.addView(viewHistory);
-        setContentView(optionsFrame);
+                //startActivity(intent);
+            }
+        });
 
-        FrameLayout statusFrame = new FrameLayout(this);
-        optionsFrame.setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                                     FrameLayout.LayoutParams.MATCH_PARENT));
-        final TextView airQualityNow = findViewById(R.id.airQualityNow);
-        final Button signOut = findViewById(R.id.buttonSignOut);
-        welcomeFrame.addView(airQualityNow);
-        welcomeFrame.addView(signOut);
-        setContentView(statusFrame);
+         final Button buttonViewProfile = findViewById(R.id.buttonViewProfile);
+         buttonViewProfile.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+                 startActivity(intent);
+             }
+         });
+
+         final Button buttonSetParameters = findViewById(R.id.buttonSetParameters);
+         buttonSetParameters.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+                 startActivity(intent);
+             }
+         });
+
+         final Button buttonViewMeasurements = findViewById(R.id.buttonViewMeasurements);
+         buttonViewMeasurements.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+                 startActivity(intent);
+             }
+         });
+
+         final Button buttonViewHistory = findViewById(R.id.buttonViewHistory);
+         buttonViewHistory.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+                 startActivity(intent);
+             }
+         });
+
+         final Button buttonSignOut = findViewById(R.id.buttonSignOut);
+
+         hideNavigationBar();
+    }
+
+
+private void hideNavigationBar(){
+         this.getWindow().getDecorView()
+                 .setSystemUiVisibility(
+                         View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                 );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    private void resetGauges() {
+        new Thread() {
+            public void run() {
+                for (int i = 0; i < 300; i++) {
+                    try {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sweepAngleControl--;
+                                sweepAngleFirstChart = 1;
+                                sweepAngleSecondChart = 1;
+                                sweepAngleThirdChart = 1;
+
+                                degree--;
+                                gaugeView.setSweepAngleFirstChart(0);
+                                gaugeView.setSweepAngleSecondChart(0);
+                                gaugeView.setSweepAngleThirdChart(0);
+                                gaugeView.setRotateDegree(degree);
+                            }
+                        });
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (i == 299) {
+                        resetMode = false;
+                        canReset = false;
+                    }
+
+                }
+            }
+        }.start();
+    }
+
+    private void startRunning() {
+        new Thread() {
+            public void run() {
+                for (int i = 0; i < 300; i++) {
+                    try {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                degree++;
+                                sweepAngleControl++;
+                                if (degree < 45) {
+                                    gaugeView.setRotateDegree(degree);
+                                }
+
+                                if (sweepAngleControl <= 90) {
+                                    sweepAngleFirstChart++;
+                                    gaugeView.setSweepAngleFirstChart(sweepAngleFirstChart);
+                                } else if (sweepAngleControl <= 180) {
+                                    sweepAngleSecondChart++;
+                                    gaugeView.setSweepAngleSecondChart(sweepAngleSecondChart);
+                                } else if (sweepAngleControl <= 270) {
+                                    sweepAngleThirdChart++;
+                                    gaugeView.setSweepAngleThirdChart(sweepAngleThirdChart);
+                                }
+
+                            }
+                        });
+                        Thread.sleep(15);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (i == 299) {
+                        isInProgress = false;
+                        canReset = true;
+                    }
+
+                }
+            }
+        }.start();
     }
 }
