@@ -1,5 +1,6 @@
 package com.example.airmonitorizer2;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,6 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.register);
         //button to login page
         TextView login = (TextView)findViewById(R.id.lnkLogin);
+        login.setPaintFlags(login.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         login.setMovementMethod(LinkMovementMethod.getInstance());
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +134,19 @@ public class RegistrationActivity extends AppCompatActivity {
                                    });
                                 }
                                 else{
-                                    Toast.makeText(RegistrationActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                                    try
+                                    {
+                                        throw task.getException();
+                                    }
+                                    catch(FirebaseAuthUserCollisionException existEmail)
+                                    {
+                                        Toast.makeText(RegistrationActivity.this, "This email is already used!Please use another email!", Toast.LENGTH_LONG).show();
+                                    }
+                                    catch(Exception e)
+                                    {
+                                        Toast.makeText(RegistrationActivity.this, "Failed to register!Try again later!", Toast.LENGTH_LONG).show();
+                                    }
+
                                 }
                             }
                         });

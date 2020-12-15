@@ -4,6 +4,8 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Patterns;
@@ -17,6 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         TextView register = (TextView)findViewById(R.id.lnkRegister);
+        register.setPaintFlags(register.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         register.setMovementMethod(LinkMovementMethod.getInstance());
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         TextView resetPassword = (TextView)findViewById(R.id.lnkResetPassword);
+        resetPassword.setPaintFlags(resetPassword.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         resetPassword.setMovementMethod(LinkMovementMethod.getInstance());
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,8 +128,16 @@ public class LoginActivity extends AppCompatActivity {
                             });
 
                         }
-                        else{
-                            Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials!", Toast.LENGTH_LONG).show();
+                        else {
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthInvalidUserException invalidEmail) {
+                                Toast.makeText(LoginActivity.this, "You entered a wrong email!", Toast.LENGTH_LONG).show();
+                            } catch (FirebaseAuthInvalidCredentialsException invalidEmail) {
+                                Toast.makeText(LoginActivity.this, "You entered a wrong password!", Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });
