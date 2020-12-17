@@ -1,71 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/commandButtons"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    android:layout_marginTop="100dp"
+    android:layout_height="match_parent"
     android:background="#FFA9D873"
-    android:orientation="vertical"
     tools:showIn="@layout/activity_welcome_user">
 
     <Button
         android:id="@+id/buttonCreateProfile"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Create Profile"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/background_light"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonViewProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonViewProfile"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="View Profile"
         android:textColor="@android:color/background_light"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSetParameters"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCreateProfile" />
 
     <Button
         android:id="@+id/buttonSetParameters"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Set Parameters"
         android:textColor="@android:color/background_light"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonViewMeasurements"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewProfile"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/buttonViewMeasurements"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
-        android:text="View Measurements"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View\nMeasurements"
         android:textColor="@android:color/background_light"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/buttonViewHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSetParameters" />
 
     <Button
         android:id="@+id/buttonViewHistory"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="115dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="View History"
         android:textColor="@android:color/background_light"
-        android:textSize="10sp"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewMeasurements"
+         />
+</androidx.constraintlayout.widget.ConstraintLayout>
