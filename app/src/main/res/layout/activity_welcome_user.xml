@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcomeUser"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    tools:context=".WelcomeUserActivity">
+
+    <include
+        android:id="@+id/commandButtons"
+        layout="@layout/command_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_marginTop="2dp"
+        android:background="#FFA9D873"
+        tools:showIn="@layout/activity_welcome_user" />
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFB3E17E"
+        tools:showIn="@layout/activity_welcome_user" />
+
+    <include
+        android:id="@+id/displayPane"
+        layout="@layout/display_pane_welcome_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C" />
+
+    <include
+        android:id="@+id/displayPaneCreateProfile"
+        layout="@layout/display_pane_create_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C" />
+
+    <include
+        android:id="@+id/displayPaneViewProfile"
+        layout="@layout/display_pane_view_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C" />
+
+    <include
+        android:id="@+id/displayPaneSetParameters"
+        layout="@layout/display_pane_set_parameters"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C" />
+
+</RelativeLayout>
