@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
-    android:background="#66FF66">
+    android:background="#CCFF99">
+
     <TextView
         android:id="@+id/homeScreen"
         android:layout_width="wrap_content"
@@ -15,8 +16,11 @@
         android:text="AirMonitorizer"
         android:textSize="25sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="111dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/lnkHelp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.217" />
 
     <Button
         android:id="@+id/button"
@@ -62,7 +66,10 @@
         android:text="Need help?"
         android:textColor="#FF000000"
         android:textSize="20dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="651dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
