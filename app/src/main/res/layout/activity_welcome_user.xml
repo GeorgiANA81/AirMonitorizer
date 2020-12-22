@@ -42,24 +42,27 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/titleBar"
         android:layout_toRightOf="@+id/commandButtons"
-        android:background="#FF94CD6C" />
+        android:background="#FF94CD6C"
+        android:visibility="visible"/>
 
-<!--    <include-->
-<!--        android:id="@+id/displayPaneViewProfile"-->
-<!--        layout="@layout/display_pane_view_profile"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_below="@+id/titleBar"-->
-<!--        android:layout_toRightOf="@+id/commandButtons"-->
-<!--        android:background="#FF94CD6C" />-->
+    <include
+        android:id="@+id/displayPaneViewProfile"
+        layout="@layout/display_pane_view_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
 
-<!--    <include-->
-<!--        android:id="@+id/displayPaneSetParameters"-->
-<!--        layout="@layout/display_pane_set_parameters"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_below="@+id/titleBar"-->
-<!--        android:layout_toRightOf="@+id/commandButtons"-->
-<!--        android:background="#FF94CD6C" />-->
+    <include
+        android:id="@+id/displayPaneSetParameters"
+        layout="@layout/display_pane_set_parameters"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
 
 </RelativeLayout>

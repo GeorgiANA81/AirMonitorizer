@@ -40,6 +40,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private DatabaseReference rootRef;
     private FirebaseUser user;
     private String userID, name;
+    private View createProfile, viewProfile, setParam;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,10 @@ public class WelcomeUserActivity extends AppCompatActivity {
          gaugeView.setRotateDegree(degree);
          startRunning();
 
+         createProfile = (View) findViewById(R.id.displayPaneCreateProfile);
+         viewProfile = (View) findViewById(R.id.displayPaneViewProfile);
+         setParam = (View) findViewById(R.id.displayPaneSetParameters);
+
         final Button buttonCreateProfile = findViewById(R.id.buttonCreateProfile);
         buttonCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +84,9 @@ public class WelcomeUserActivity extends AppCompatActivity {
               //Intent intent = new Intent(WelcomeUserActivity.this,);
 
                 //startActivity(intent);
+                createProfile.setVisibility(View.VISIBLE);
+                viewProfile.setVisibility(View.INVISIBLE);
+                setParam.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -86,8 +94,11 @@ public class WelcomeUserActivity extends AppCompatActivity {
          buttonViewProfile.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
-                 startActivity(intent);
+//                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+//                 startActivity(intent);
+                 createProfile.setVisibility(View.INVISIBLE);
+                 viewProfile.setVisibility(View.VISIBLE);
+                 setParam.setVisibility(View.INVISIBLE);
              }
          });
 
@@ -95,8 +106,11 @@ public class WelcomeUserActivity extends AppCompatActivity {
          buttonSetParameters.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
-                 startActivity(intent);
+//                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+//                 startActivity(intent);
+                 createProfile.setVisibility(View.INVISIBLE);
+                 viewProfile.setVisibility(View.INVISIBLE);
+                 setParam.setVisibility(View.VISIBLE);
              }
          });
 

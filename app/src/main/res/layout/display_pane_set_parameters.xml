@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/displayPane"
+    android:id="@+id/displayPaneSetParameters"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="#FF94CD6C"
@@ -112,23 +112,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/smokeCheck" />
 
-    <Button
-        android:id="@+id/buttonSignOut"
-        style="@style/Widget.AppCompat.Button"
-
-        android:layout_width="88sp"
-        android:layout_height="wrap_content"
-
-        android:text="Sign Out"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/background_light"
-
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.0"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSave"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
