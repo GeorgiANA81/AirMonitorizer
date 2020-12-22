@@ -114,11 +114,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if(admin.equals("yes")){
                                         //admin profile
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, WelcomeAdminActivity.class));
                                     }
                                     else{
                                         //user profile
-                                        startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, WelcomeUserActivity.class));
                                     }
                                 }
                                 @Override

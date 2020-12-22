@@ -8,7 +8,18 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class WelcomeUserActivity extends AppCompatActivity {
@@ -23,10 +34,40 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private boolean resetMode = false;
     private boolean canReset = false;
 
+    private TextView welcome;
+    private View title;
+    private FirebaseAuth mAuth;
+    private DatabaseReference rootRef;
+    private FirebaseUser user;
+    private String userID, name;
+
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_user);
+        title = (View) findViewById(R.id.titleBar);
+         welcome = (TextView)title.findViewById(R.id.welcomeText);
+         user = FirebaseAuth.getInstance().getCurrentUser();
+         rootRef  = FirebaseDatabase.getInstance().getReference("Users");
+         userID = user.getUid();
+         //preluam datele de la utilizatorul care este logat
+         rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                  @Override
+                                                                  public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                      User userProfile = snapshot.getValue(User.class);
+                                                                      if (userProfile != null) {
+                                                                          name = userProfile.fullname;
+                                                                          welcome.setText("Welcome, " + name + "!");
+                                                                      }
+                                                                  }
+
+                                                                  @Override
+                                                                  public void onCancelled(@NonNull DatabaseError error) {
+                                                                      Toast.makeText(WelcomeUserActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                                                                  }
+                                                              });
+
+
          gaugeView = (GaugeView) findViewById(R.id.gaugeView);
          gaugeView.setRotateDegree(degree);
          startRunning();

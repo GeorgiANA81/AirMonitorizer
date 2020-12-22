@@ -1,4 +1,6 @@
 package com.example.airmonitorizer2;
 
-public class ViewHistory {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ViewHistory extends AppCompatActivity {
 }

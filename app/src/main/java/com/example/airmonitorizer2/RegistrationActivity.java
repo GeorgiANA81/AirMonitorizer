@@ -125,7 +125,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                            if(task.isSuccessful()){
 //                                               redirect to user profile
                                                Toast.makeText(RegistrationActivity.this, "Congratulations!", Toast.LENGTH_LONG).show();
-                                               startActivity(new Intent(RegistrationActivity.this, HomeActivity.class));
+                                               startActivity(new Intent(RegistrationActivity.this, WelcomeUserActivity.class));
                                            }
                                            else{
                                                Toast.makeText(RegistrationActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();

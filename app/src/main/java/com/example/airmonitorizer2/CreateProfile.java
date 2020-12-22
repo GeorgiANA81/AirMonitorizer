@@ -1,4 +1,6 @@
 package com.example.airmonitorizer2;
 
-public class CreateProfile {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class CreateProfile extends AppCompatActivity {
 }
