@@ -8,36 +8,6 @@
     android:background="#FF94CD6C"
     tools:showIn="@layout/activity_welcome_user">
 
-    <TextView
-        android:id="@+id/enterDisease"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="36sp"
-        android:text="Enter disease:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black"
-
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.2"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/diseaseCP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.2"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterDisease" />
 
     <TextView
         android:id="@+id/chooseFromList"
@@ -45,142 +15,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="16sp"
         android:text="Choose from list:"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
 
         android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.2"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diseaseCP" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.058" />
 
-    <HorizontalScrollView
-        android:id="@+id/diseaseList"
+    <CheckBox
+        android:id="@+id/asthmaCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="48dp"
+        android:checked="false"
+        android:text="Asthma"
 
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseFromList">
+        app:layout_constraintTop_toBottomOf="@+id/chooseFromList" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/asthma"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginTop="16sp"
-                android:text="Asthma"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/dustAllergy"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginTop="16sp"
-
-                android:text="Dust Allergy"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-
-                android:textStyle="bold" />
-
-            <!--<TextView
-            android:id="@+id/chooseFromList"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="16sp"
-            android:text="Choose from list:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintHorizontal_bias="0.0"
-
-            app:layout_constraintStart_toStartOf="@+id/Temperature"
-            app:layout_constraintTop_toBottomOf="@+id/Temperature" />
-
-        <TextView
-            android:id="@+id/chooseFromList"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="16sp"
-            android:text="Choose from list:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintHorizontal_bias="0.0"
-
-            app:layout_constraintStart_toStartOf="@+id/Temperature"
-            app:layout_constraintTop_toBottomOf="@+id/Temperature" />-->
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <Button
-        android:id="@+id/viewDetails"
-        style="@style/Widget.AppCompat.Button"
-
-        android:layout_width="88sp"
+    <CheckBox
+        android:id="@+id/dustAllergyCheck"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:checked="false"
+        android:text="Dust allergy"
 
-        android:layout_marginTop="84dp"
-        android:text="View details"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/background_light"
-
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.492"
-
+        app:layout_constraintHorizontal_bias="0.404"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diseaseList" />
-
-    <Button
-        android:id="@+id/select"
-        style="@style/Widget.AppCompat.Button"
-
-        android:layout_width="88sp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="44dp"
-        android:text="Select"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/background_light"
-
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.398"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewDetails" />
+        app:layout_constraintTop_toBottomOf="@+id/asthmaCheck" />
 
     <Button
         android:id="@+id/save"
@@ -189,18 +62,54 @@
         android:layout_width="88sp"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="72dp"
         android:text="Save"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/background_light"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.397"
+        android:onClick="saveChecks"/>
+
+    <Button
+        android:id="@+id/viewDetails"
+        style="@style/Widget.AppCompat.Button"
+
+        android:layout_width="88sp"
+        android:layout_height="wrap_content"
+
+        android:text="View details"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/background_light"
 
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.487"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select" />
+        tools:layout_editor_absoluteY="324dp"
+        app:layout_constraintTop_toBottomOf="@+id/save"/>
+
+    <TextView
+        android:id="@+id/showDetails"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Asthma is a condition in which your airways narrow and swell and may produce extra mucus. This can make breathing difficult and trigger coughing, a whistling sound (wheezing) when you breathe out and shortness of breath. For some people, asthma is a minor nuisance.\nDust mite allergy is an allergic reaction to tiny bugs that commonly live in house dust. Signs of dust mite allergy include those common to hay fever, such as sneezing and runny nose. Many people with dust mite allergy also experience signs of asthma, such as wheezing and difficulty breathing."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewDetails"
+        app:layout_constraintVertical_bias="0.421"
+        tools:layout_editor_absoluteX="-16dp"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
