@@ -56,6 +56,15 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private String checkExistingDiseases = "";
     private Button viewDetails;
     private TextView showDetails;
+    private View parameters;
+    private Button saveParameters;
+    private String checkedParameters = "";
+    private CheckBox temperatureCheck;
+    private CheckBox humidityCheck;
+    private CheckBox gasCheck;
+    private CheckBox dustCheck;
+    private CheckBox smokeCheck;
+    private String checkExistingParameters = "";
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,13 @@ public class WelcomeUserActivity extends AppCompatActivity {
          allergy = (CheckBox) profile.findViewById(R.id.dustAllergyCheck);
          viewDetails = (Button)profile.findViewById(R.id.viewDetails);
          showDetails = (TextView) profile.findViewById(R.id.showDetails);
+         parameters = (View) findViewById(R.id.displayPaneSetParameters);
+         saveParameters = (Button) parameters.findViewById(R.id.buttonSave);
+         temperatureCheck = (CheckBox) parameters.findViewById(R.id.temperatureCheck);
+         humidityCheck = (CheckBox) parameters.findViewById(R.id.humidityCheck);
+         gasCheck = (CheckBox) parameters.findViewById(R.id.gasCheck);
+         dustCheck = (CheckBox) parameters.findViewById(R.id.dustCheck);
+         smokeCheck = (CheckBox) parameters.findViewById(R.id.smokeCheck);
          //preluam datele de la utilizatorul care este logat
          rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                                                   @Override
@@ -81,17 +97,39 @@ public class WelcomeUserActivity extends AppCompatActivity {
                                                                           name = userProfile.fullname;
                                                                           welcome.setText("Welcome, " + name + "!");
                                                                           checkExistingDiseases = userProfile.diseases;
+                                                                          checkExistingParameters = userProfile.parameters;
                                                                           if (checkExistingDiseases != ""){
                                                                               String[] d = checkExistingDiseases.split(",",3);
 
-                                                                              if(d[0].equals("Asthma"))
-                                                                              {
-                                                                                  asthma.setChecked(true);
+                                                                              for(String each:d){
+                                                                                  if(each.equals("Asthma")){
+                                                                                      asthma.setChecked(true);
+                                                                                  }
+                                                                                  else if(each.equals("Dust allergy")){
+                                                                                      allergy.setChecked(true);
+                                                                                  }
                                                                               }
-                                                                              if(d[1].equals("Dust allergy"))
-                                                                              {
-                                                                                  allergy.setChecked(true);
+                                                                          }
+                                                                          if (checkExistingParameters != ""){
+                                                                              String[] p = checkExistingParameters.split(",",6);
+                                                                              for(String each:p){
+                                                                                  if(each.equals("Temperature")){
+                                                                                      temperatureCheck.setChecked(true);
+                                                                                  }
+                                                                                  else if(each.equals("Humidity")){
+                                                                                      humidityCheck.setChecked(true);
+                                                                                  }
+                                                                                  else if(each.equals("Gas")){
+                                                                                      gasCheck.setChecked(true);
+                                                                                  }
+                                                                                  else if(each.equals("Dust")){
+                                                                                      dustCheck.setChecked(true);
+                                                                                  }
+                                                                                  else if(each.equals("Smoke")){
+                                                                                      smokeCheck.setChecked(true);
+                                                                                  }
                                                                               }
+
                                                                           }
                                                                       }
                                                                   }
@@ -192,7 +230,6 @@ public class WelcomeUserActivity extends AppCompatActivity {
                          @Override
                          public void onComplete(@NonNull Task<Void> task) {
                              if (task.isSuccessful()) {
-//                                               redirect to user profile
                                  Toast.makeText(WelcomeUserActivity.this, "Diseases saved!", Toast.LENGTH_LONG).show();
                              } else {
                                  Toast.makeText(WelcomeUserActivity.this, "Failed to save disease! Try again!", Toast.LENGTH_LONG).show();
@@ -211,6 +248,40 @@ public class WelcomeUserActivity extends AppCompatActivity {
                  else if (showDetails.getVisibility()==View.VISIBLE){
                      showDetails.setVisibility(View.INVISIBLE);
                  }
+             }
+         });
+
+         saveParameters.setOnClickListener(new View.OnClickListener(){
+             @Override
+             public void onClick(View v){
+                 checkedParameters = "";
+                 if(temperatureCheck.isChecked()) {
+                     checkedParameters =checkedParameters + "Temperature,";
+                 }
+                 if(humidityCheck.isChecked()) {
+                     checkedParameters =checkedParameters + "Humidity,";
+                 }
+                 if(gasCheck.isChecked()) {
+                     checkedParameters =checkedParameters + "Gas,";
+                 }
+                 if(dustCheck.isChecked()) {
+                     checkedParameters =checkedParameters + "Dust,";
+                 }
+                 if(smokeCheck.isChecked()) {
+                     checkedParameters =checkedParameters + "Smoke,";
+                 }
+                 FirebaseDatabase.getInstance().getReference("Users")
+                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("parameters")
+                         .setValue(checkedParameters).addOnCompleteListener(new OnCompleteListener<Void>() {
+                     @Override
+                     public void onComplete(@NonNull Task<Void> task) {
+                         if (task.isSuccessful()) {
+                             Toast.makeText(WelcomeUserActivity.this, "Parameters saved!", Toast.LENGTH_LONG).show();
+                         } else {
+                             Toast.makeText(WelcomeUserActivity.this, "Failed to save parameters! Try again!", Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 });
              }
          });
          hideNavigationBar();
