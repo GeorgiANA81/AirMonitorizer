@@ -44,9 +44,9 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private TextView welcome;
     private View title;
     private FirebaseAuth mAuth;
-    private DatabaseReference rootRef;
-    private FirebaseUser user;
-    private String userID, name;
+    private DatabaseReference rootRef, rootRef2;
+    private FirebaseUser user, user2;
+    private String userID, name, userID2;
     private View createProfile, viewProfile, setParam;
     private View profile;
     private Button saveChecks;
@@ -65,6 +65,12 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private CheckBox dustCheck;
     private CheckBox smokeCheck;
     private String checkExistingParameters = "";
+    private View viewInfo;
+    private TextView infoName;
+    private TextView infoEmail;
+    private TextView infoPhone;
+    private TextView infoDiseases;
+    private TextView infoParameters;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +79,11 @@ public class WelcomeUserActivity extends AppCompatActivity {
         title = (View) findViewById(R.id.titleBar);
          welcome = (TextView)title.findViewById(R.id.welcomeText);
          user = FirebaseAuth.getInstance().getCurrentUser();
+         user2 = FirebaseAuth.getInstance().getCurrentUser();
          rootRef  = FirebaseDatabase.getInstance().getReference("Users");
+         rootRef2  = FirebaseDatabase.getInstance().getReference("Users");
          userID = user.getUid();
+         userID2 = user.getUid();
          profile = (View) findViewById(R.id.displayPaneCreateProfile);
          saveChecks = (Button)profile.findViewById(R.id.save);
          asthma = (CheckBox) profile.findViewById(R.id.asthmaCheck);
@@ -88,6 +97,12 @@ public class WelcomeUserActivity extends AppCompatActivity {
          gasCheck = (CheckBox) parameters.findViewById(R.id.gasCheck);
          dustCheck = (CheckBox) parameters.findViewById(R.id.dustCheck);
          smokeCheck = (CheckBox) parameters.findViewById(R.id.smokeCheck);
+         viewInfo = (View) findViewById(R.id.displayPaneViewProfile);
+         infoName = (TextView) viewInfo.findViewById(R.id.infoName);
+         infoEmail = (TextView) viewInfo.findViewById(R.id.infoEmail);
+         infoPhone = (TextView) viewInfo.findViewById(R.id.infoPhone);
+         infoDiseases = (TextView) viewInfo.findViewById(R.id.infoDiseases);
+         infoParameters = (TextView) viewInfo.findViewById(R.id.infoParameters);
          //preluam datele de la utilizatorul care este logat
          rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                                                   @Override
@@ -98,7 +113,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
                                                                           welcome.setText("Welcome, " + name + "!");
                                                                           checkExistingDiseases = userProfile.diseases;
                                                                           checkExistingParameters = userProfile.parameters;
-                                                                          if (checkExistingDiseases != ""){
+                                                                          if (!checkExistingDiseases.equals("")){
                                                                               String[] d = checkExistingDiseases.split(",",3);
 
                                                                               for(String each:d){
@@ -110,7 +125,10 @@ public class WelcomeUserActivity extends AppCompatActivity {
                                                                                   }
                                                                               }
                                                                           }
-                                                                          if (checkExistingParameters != ""){
+                                                                          else{
+                                                                              infoDiseases.setText("You didn't select anything!");
+                                                                          }
+                                                                          if (!checkExistingParameters.equals("")){
                                                                               String[] p = checkExistingParameters.split(",",6);
                                                                               for(String each:p){
                                                                                   if(each.equals("Temperature")){
@@ -130,6 +148,9 @@ public class WelcomeUserActivity extends AppCompatActivity {
                                                                                   }
                                                                               }
 
+                                                                          }
+                                                                          else{
+                                                                              infoParameters.setText("You didn't select anything!");
                                                                           }
                                                                       }
                                                                   }
@@ -171,6 +192,32 @@ public class WelcomeUserActivity extends AppCompatActivity {
                  createProfile.setVisibility(View.INVISIBLE);
                  viewProfile.setVisibility(View.VISIBLE);
                  setParam.setVisibility(View.INVISIBLE);
+                 rootRef2.child(userID2).addListenerForSingleValueEvent(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         User userProfile2 = snapshot.getValue(User.class);
+                         if (userProfile2 != null) {
+                             infoName.setText(userProfile2.fullname);
+                             infoEmail.setText(userProfile2.email);
+                             infoPhone.setText(userProfile2.phone);
+                             infoDiseases.setText(userProfile2.diseases);
+                             infoParameters.setText(userProfile2.parameters);
+                             checkExistingDiseases = userProfile2.diseases;
+                             checkExistingParameters = userProfile2.parameters;
+                             if (checkExistingDiseases.equals("")){
+                                 infoDiseases.setText("You didn't select anything!");
+                         }
+                         if (checkExistingParameters.equals("")){
+                             infoParameters.setText("You didn't select anything!");
+                     }
+                 }
+                     }
+
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError error) {
+                         Toast.makeText(WelcomeUserActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                     }
+                 });
              }
          });
 
