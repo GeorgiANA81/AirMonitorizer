@@ -1,5 +1,6 @@
 package com.example.airmonitorizer2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +20,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
     private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
     private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
 
+
+    private DatabaseReference rootRef, rootRef2;
+    private FirebaseUser user;
+    private String userID;
+    private boolean asthma, allergy;
+    private int min, max;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +85,15 @@ public class MainActivity extends AppCompatActivity {
         final TextView infoDust = findViewById(R.id.infoDust);
         final TextView infoGas = findViewById(R.id.infoGas);
         final TextView infoSmoke = findViewById(R.id.infoSmoke);
+        final Button buttonReturn = findViewById(R.id.buttonReturn);
+        final TextView notificationText = findViewById(R.id.notificationText);
+
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        rootRef  = FirebaseDatabase.getInstance().getReference("Users");
+        rootRef2  = FirebaseDatabase.getInstance().getReference("asthma");
+        userID = user.getUid();
+
 
         // If a bluetooth device has been selected from SelectDeviceActivity
         deviceName = getIntent().getStringExtra("deviceName");
@@ -116,11 +142,83 @@ public class MainActivity extends AppCompatActivity {
                     case MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
                         String[] info = arduinoMsg.split(",", 6);
-                        infoTemperature.setText(info[0]);
-                        infoHumidity.setText(info[1]);
-                        infoGas.setText(info[2]);
-                        infoDust.setText(info[3]);
-                        infoSmoke.setText(info[4]);
+                        rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User userProfile = snapshot.getValue(User.class);
+                                if (userProfile != null) {
+                                    String checkExistingDiseases = userProfile.diseases;
+                                    asthma = false;
+                                    allergy = false;
+                                    if (!checkExistingDiseases.equals("")){
+                                        String[] d = checkExistingDiseases.split(",",3);
+                                        for(String each:d){
+                                            if(each.equals("Asthma")){
+                                                asthma = true;
+                                            }
+                                            else if(each.equals("Dust allergy")){
+                                                allergy = true;
+                                            }
+                                        }
+                                    }
+                                    String checkExistingParameters = userProfile.parameters;
+                                    if (!checkExistingParameters.equals("")){
+                                        String[] p = checkExistingParameters.split(",",6);
+                                        for(String each:p){
+                                            if(each.equals("Temperature")){
+                                                infoTemperature.setText(info[0]+"C");
+                                            }
+                                            else if(each.equals("Humidity")){
+                                                infoHumidity.setText(info[1]+"%");
+                                            }
+                                            else if(each.equals("Gas")){
+                                                infoGas.setText(info[2]+"ppm");
+                                            }
+                                            else if(each.equals("Dust")){
+                                                infoDust.setText(info[3]+"ppm");
+                                            }
+                                            else if(each.equals("Smoke")){
+                                                infoSmoke.setText(info[4]+"ppm");
+                                            }
+                                        }
+
+                                    }
+                                    rootRef2.child("Humidity").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            Humidity h = snapshot.getValue(Humidity.class);
+                                            if(h != null) {
+                                                min = info[1].compareTo(h.min);
+                                                max = info[1].compareTo(h.max);
+                                            if((allergy||asthma) && !info[3].equals("0.00")){
+                                                notificationText.setText("Be careful! There is dust and can affect you!");
+                                            }
+                                            else if(asthma && (!info[4].equals("0"))){
+                                                notificationText.setText("Be careful! There is smoke and can affect you!");
+                                            }
+                                            else if(asthma && (min<0||max>0)){
+                                                notificationText.setText("Be careful! Humidity is not good for you!");
+                                            }
+                                            else{
+                                                notificationText.setText("Everything looks good!");
+                                            }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(MainActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(MainActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                            }
+                        });
                         break;
                 }
             }
@@ -136,14 +234,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Button to ON/OFF LED on Arduino Board
         buttonToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String cmdText = null;
-                String btnState = buttonToggle.getText().toString().toLowerCase();
-                cmdText = "all";
+                cmdText = "y";
                 connectedThread.write(cmdText);
+            }
+        });
+
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WelcomeUserActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -291,4 +395,6 @@ public class MainActivity extends AppCompatActivity {
         Intent a = new Intent(MainActivity.this, WelcomeUserActivity.class);
         startActivity(a);
     }
+
+
 }
