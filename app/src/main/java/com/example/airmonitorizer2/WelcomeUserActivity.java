@@ -1,9 +1,16 @@
 package com.example.airmonitorizer2;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -25,8 +32,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import static android.content.ContentValues.TAG;
 
 
 public class WelcomeUserActivity extends AppCompatActivity {
@@ -72,6 +85,8 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private TextView infoDiseases;
     private TextView infoParameters;
 
+
+
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +118,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
          infoPhone = (TextView) viewInfo.findViewById(R.id.infoPhone);
          infoDiseases = (TextView) viewInfo.findViewById(R.id.infoDiseases);
          infoParameters = (TextView) viewInfo.findViewById(R.id.infoParameters);
+
          //preluam datele de la utilizatorul care este logat
          rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                                                                   @Override
@@ -174,9 +190,6 @@ public class WelcomeUserActivity extends AppCompatActivity {
         buttonCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //Intent intent = new Intent(WelcomeUserActivity.this,);
-
-                //startActivity(intent);
                 createProfile.setVisibility(View.VISIBLE);
                 viewProfile.setVisibility(View.INVISIBLE);
                 setParam.setVisibility(View.INVISIBLE);
@@ -192,6 +205,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
                  createProfile.setVisibility(View.INVISIBLE);
                  viewProfile.setVisibility(View.VISIBLE);
                  setParam.setVisibility(View.INVISIBLE);
+
                  rootRef2.child(userID2).addListenerForSingleValueEvent(new ValueEventListener() {
                      @Override
                      public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -225,8 +239,6 @@ public class WelcomeUserActivity extends AppCompatActivity {
          buttonSetParameters.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-//                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
-//                 startActivity(intent);
                  createProfile.setVisibility(View.INVISIBLE);
                  viewProfile.setVisibility(View.INVISIBLE);
                  setParam.setVisibility(View.VISIBLE);
@@ -237,7 +249,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
          buttonViewMeasurements.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
+                 Intent intent = new Intent(WelcomeUserActivity.this, MainActivity.class);
                  startActivity(intent);
              }
          });
@@ -342,17 +354,6 @@ private void hideNavigationBar(){
                  );
 }
 
-
-
-
-
-
-
-
-
-
-
-
     private void resetGauges() {
         new Thread() {
             public void run() {
@@ -430,4 +431,11 @@ private void hideNavigationBar(){
             }
         }.start();
     }
+    public void onBackPressed() {
+
+        Intent a = new Intent(WelcomeUserActivity.this, WelcomeUserActivity.class);
+        startActivity(a);
+    }
 }
+
+

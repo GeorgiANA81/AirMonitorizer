@@ -38,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
     public static ConnectedThread connectedThread;
     public static CreateConnectThread createConnectThread;
 
+    GaugeView gaugeView;
+    private float degree = -225;
+    private float sweepAngleControl = 0;
+    private float sweepAngleFirstChart = 1;
+    private float sweepAngleSecondChart = 1;
+    private float sweepAngleThirdChart = 1;
+    private boolean isInProgress = false;
+    private boolean resetMode = false;
+    private boolean canReset = false;
+
     private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
     private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
 
@@ -51,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
         final Toolbar toolbar = findViewById(R.id.toolbar);
         final ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        final TextView textViewInfo = findViewById(R.id.textViewInfo);
         final Button buttonToggle = findViewById(R.id.buttonToggle);
         buttonToggle.setEnabled(false);
-        final ImageView imageView = findViewById(R.id.imageView);
-        imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
+        final TextView infoTemperature = findViewById(R.id.infoTemperature);
+        final TextView infoHumidity = findViewById(R.id.infoHumidity);
+        final TextView infoDust = findViewById(R.id.infoDust);
+        final TextView infoGas = findViewById(R.id.infoGas);
+        final TextView infoSmoke = findViewById(R.id.infoSmoke);
 
         // If a bluetooth device has been selected from SelectDeviceActivity
         deviceName = getIntent().getStringExtra("deviceName");
@@ -103,18 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
                     case MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-//                        switch (arduinoMsg.toLowerCase()){
-//                            case "led is turned on":
-//                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOn));
-//                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
-//                                break;
-//                            case "led is turned off":
-//                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
-//                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
-//                                break;
-//                        }
-                        imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
-                        textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                        String[] info = arduinoMsg.split(",", 6);
+                        infoTemperature.setText(info[0]);
+                        infoHumidity.setText(info[1]);
+                        infoGas.setText(info[2]);
+                        infoDust.setText(info[3]);
+                        infoSmoke.setText(info[4]);
                         break;
                 }
             }
@@ -136,22 +142,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String cmdText = null;
                 String btnState = buttonToggle.getText().toString().toLowerCase();
-                switch (btnState){
-                    case "turn on":
-                        buttonToggle.setText("Turn Off");
-                        // Command to turn on LED on Arduino. Must match with the command in Arduino code
-                        cmdText = "t";
-                        break;
-                    case "turn off":
-                        buttonToggle.setText("Turn On");
-                        // Command to turn off LED on Arduino. Must match with the command in Arduino code
-                        cmdText = "h";
-                        break;
-                }
-                // Send command to Arduino board
+                cmdText = "all";
                 connectedThread.write(cmdText);
             }
         });
+
     }
 
     /* ============================ Thread to Create Bluetooth Connection =================================== */
@@ -293,9 +288,7 @@ public class MainActivity extends AppCompatActivity {
         if (createConnectThread != null){
             createConnectThread.cancel();
         }
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent a = new Intent(MainActivity.this, WelcomeUserActivity.class);
         startActivity(a);
     }
 }

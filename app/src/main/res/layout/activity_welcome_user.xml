@@ -53,7 +53,7 @@
         android:layout_below="@+id/titleBar"
         android:layout_toRightOf="@+id/commandButtons"
         android:background="#FF94CD6C"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/displayPaneSetParameters"
@@ -64,5 +64,6 @@
         android:layout_toRightOf="@+id/commandButtons"
         android:background="#FF94CD6C"
         android:visibility="gone"/>
+
 
 </RelativeLayout>
