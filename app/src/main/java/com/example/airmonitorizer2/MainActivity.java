@@ -34,6 +34,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
@@ -48,25 +52,19 @@ public class MainActivity extends AppCompatActivity {
     public static ConnectedThread connectedThread;
     public static CreateConnectThread createConnectThread;
 
-    GaugeView gaugeView;
-    private float degree = -225;
-    private float sweepAngleControl = 0;
-    private float sweepAngleFirstChart = 1;
-    private float sweepAngleSecondChart = 1;
-    private float sweepAngleThirdChart = 1;
-    private boolean isInProgress = false;
-    private boolean resetMode = false;
-    private boolean canReset = false;
 
     private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
     private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
 
 
-    private DatabaseReference rootRef, rootRef2;
+    private DatabaseReference rootRef, rootRef2, ref;
     private FirebaseUser user;
     private String userID;
     private boolean asthma, allergy;
     private int min, max;
+    private String formattedDate;
+    private Date c;
+    private SimpleDateFormat df;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +85,18 @@ public class MainActivity extends AppCompatActivity {
         final TextView infoSmoke = findViewById(R.id.infoSmoke);
         final Button buttonReturn = findViewById(R.id.buttonReturn);
         final TextView notificationText = findViewById(R.id.notificationText);
+        final ImageView gauge = findViewById(R.id.imageView);
 
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         rootRef  = FirebaseDatabase.getInstance().getReference("Users");
         rootRef2  = FirebaseDatabase.getInstance().getReference("asthma");
+        ref = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
+
+        c = Calendar.getInstance().getTime();
+        df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        formattedDate = df.format(c);
 
 
         // If a bluetooth device has been selected from SelectDeviceActivity
@@ -161,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
                                             }
                                         }
                                     }
+                                    Parameters parametersInfo = new Parameters(info[0], info[1], info[2], info[3], info[4]);
+                                    ref.child(userID).child("history").child(formattedDate).setValue(parametersInfo);
+
                                     String checkExistingParameters = userProfile.parameters;
                                     if (!checkExistingParameters.equals("")){
                                         String[] p = checkExistingParameters.split(",",6);
@@ -192,15 +199,19 @@ public class MainActivity extends AppCompatActivity {
                                                 max = info[1].compareTo(h.max);
                                             if((allergy||asthma) && !info[3].equals("0.00")){
                                                 notificationText.setText("Be careful! There is dust and can affect you!");
+                                                gauge.setImageResource(R.drawable.bad);
                                             }
                                             else if(asthma && (!info[4].equals("0"))){
                                                 notificationText.setText("Be careful! There is smoke and can affect you!");
+                                                gauge.setImageResource(R.drawable.bad);
                                             }
                                             else if(asthma && (min<0||max>0)){
                                                 notificationText.setText("Be careful! Humidity is not good for you!");
+                                                gauge.setImageResource(R.drawable.bad);
                                             }
                                             else{
                                                 notificationText.setText("Everything looks good!");
+                                                gauge.setImageResource(R.drawable.good);
                                             }
                                             }
                                         }

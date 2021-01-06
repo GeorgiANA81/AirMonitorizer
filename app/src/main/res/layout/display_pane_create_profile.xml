@@ -31,13 +31,13 @@
         android:id="@+id/asthmaCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="28dp"
         android:checked="false"
         android:text="Asthma"
 
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.354"
+        app:layout_constraintHorizontal_bias="0.357"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chooseFromList" />
 
@@ -47,10 +47,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:checked="false"
+
         android:text="Dust allergy"
 
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintHorizontal_bias="0.404"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/asthmaCheck" />
@@ -62,20 +62,20 @@
         android:layout_width="88sp"
         android:layout_height="wrap_content"
 
+        android:background="@color/pearlGray"
+        android:onClick="saveChecks"
         android:text="Save"
+
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/black"
-
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397"
-        android:onClick="saveChecks"/>
+        app:layout_constraintVertical_bias="0.357" />
 
     <Button
         android:id="@+id/viewDetails"
@@ -83,33 +83,43 @@
 
         android:layout_width="88sp"
         android:layout_height="wrap_content"
-
+        android:background="@color/pearlGray"
         android:text="View details"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/black"
 
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.487"
-
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="324dp"
-        app:layout_constraintTop_toBottomOf="@+id/save"/>
+        app:layout_constraintTop_toBottomOf="@+id/save"
+        app:layout_constraintVertical_bias="0.032" />
 
-    <TextView
-        android:id="@+id/showDetails"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Asthma is a condition in which your airways narrow and swell and may produce extra mucus. This can make breathing difficult and trigger coughing, a whistling sound (wheezing) when you breathe out and shortness of breath. For some people, asthma is a minor nuisance.\nDust mite allergy is an allergic reaction to tiny bugs that commonly live in house dust. Signs of dust mite allergy include those common to hay fever, such as sneezing and runny nose. Many people with dust mite allergy also experience signs of asthma, such as wheezing and difficulty breathing."
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black"
+    <ScrollView
+        android:layout_width="228dp"
+        android:layout_height="265dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewDetails"
-        app:layout_constraintVertical_bias="0.421"
-        tools:layout_editor_absoluteX="-16dp"
-        android:visibility="invisible"/>
+        app:layout_constraintVertical_bias="0.0">
 
+        <TextView
+            android:id="@+id/showDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:text="Asthma is a condition in which your airways narrow and swell and may produce extra mucus. This can make breathing difficult and trigger coughing, a whistling sound (wheezing) when you breathe out and shortness of breath. For some people, asthma is a minor nuisance.\nDust mite allergy is an allergic reaction to tiny bugs that commonly live in house dust. Signs of dust mite allergy include those common to hay fever, such as sneezing and runny nose. Many people with dust mite allergy also experience signs of asthma, such as wheezing and difficulty breathing."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewDetails"
+            app:layout_constraintVertical_bias="0.421"
+            tools:layout_editor_absoluteX="-16dp" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

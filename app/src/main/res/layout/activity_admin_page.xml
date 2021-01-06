@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcomeUser"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    tools:context=".adminPageActivity">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFB3E17E"
+        tools:showIn="@layout/activity_admin_page" />
+
+    <include
+        android:id="@+id/adminButtons"
+        layout="@layout/admin_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="702dp"
+        android:layout_below="@+id/titleBar"
+        android:layout_marginTop="0dp"
+        android:background="#FFA9D873"
+        tools:showIn="@layout/activity_admin_page" />
+
+    <include
+        android:id="@+id/message"
+        layout="@layout/welcome_admin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/adminButtons"
+        android:background="#FF94CD6C"
+        android:visibility="visible"/>
+
+    <include
+        android:id="@+id/allUsers"
+        layout="@layout/all_users"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/adminButtons"
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
+    <include
+        android:id="@+id/allAdmins"
+        layout="@layout/all_admins"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/adminButtons"
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>

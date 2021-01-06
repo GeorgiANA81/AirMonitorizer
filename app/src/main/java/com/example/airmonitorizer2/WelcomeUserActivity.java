@@ -44,24 +44,13 @@ import static android.content.ContentValues.TAG;
 
 public class WelcomeUserActivity extends AppCompatActivity {
 
-    GaugeView gaugeView;
-    private float degree = -225;
-    private float sweepAngleControl = 0;
-    private float sweepAngleFirstChart = 1;
-    private float sweepAngleSecondChart = 1;
-    private float sweepAngleThirdChart = 1;
-    private boolean isInProgress = false;
-    private boolean resetMode = false;
-    private boolean canReset = false;
-
     private TextView welcome;
     private View title;
     private FirebaseAuth mAuth;
-    private DatabaseReference rootRef, rootRef2;
-    private FirebaseUser user, user2;
-    private String userID, name, userID2;
+    private DatabaseReference rootRef, rootRef2, rootRef3;
+    private FirebaseUser user;
+    private String userID, name;
     private View createProfile, viewProfile, setParam;
-    private View profile;
     private Button saveChecks;
     private CheckBox asthma;
     private CheckBox allergy;
@@ -69,7 +58,6 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private String checkExistingDiseases = "";
     private Button viewDetails;
     private TextView showDetails;
-    private View parameters;
     private Button saveParameters;
     private String checkedParameters = "";
     private CheckBox temperatureCheck;
@@ -78,12 +66,14 @@ public class WelcomeUserActivity extends AppCompatActivity {
     private CheckBox dustCheck;
     private CheckBox smokeCheck;
     private String checkExistingParameters = "";
-    private View viewInfo;
     private TextView infoName;
     private TextView infoEmail;
     private TextView infoPhone;
     private TextView infoDiseases;
     private TextView infoParameters;
+    private View history;
+    private TextView infoHistory;
+    private String allMeasurements = "";
 
 
 
@@ -94,30 +84,31 @@ public class WelcomeUserActivity extends AppCompatActivity {
         title = (View) findViewById(R.id.titleBar);
          welcome = (TextView)title.findViewById(R.id.welcomeText);
          user = FirebaseAuth.getInstance().getCurrentUser();
-         user2 = FirebaseAuth.getInstance().getCurrentUser();
          rootRef  = FirebaseDatabase.getInstance().getReference("Users");
          rootRef2  = FirebaseDatabase.getInstance().getReference("Users");
+         rootRef3  = FirebaseDatabase.getInstance().getReference("Users");
          userID = user.getUid();
-         userID2 = user.getUid();
-         profile = (View) findViewById(R.id.displayPaneCreateProfile);
-         saveChecks = (Button)profile.findViewById(R.id.save);
-         asthma = (CheckBox) profile.findViewById(R.id.asthmaCheck);
-         allergy = (CheckBox) profile.findViewById(R.id.dustAllergyCheck);
-         viewDetails = (Button)profile.findViewById(R.id.viewDetails);
-         showDetails = (TextView) profile.findViewById(R.id.showDetails);
-         parameters = (View) findViewById(R.id.displayPaneSetParameters);
-         saveParameters = (Button) parameters.findViewById(R.id.buttonSave);
-         temperatureCheck = (CheckBox) parameters.findViewById(R.id.temperatureCheck);
-         humidityCheck = (CheckBox) parameters.findViewById(R.id.humidityCheck);
-         gasCheck = (CheckBox) parameters.findViewById(R.id.gasCheck);
-         dustCheck = (CheckBox) parameters.findViewById(R.id.dustCheck);
-         smokeCheck = (CheckBox) parameters.findViewById(R.id.smokeCheck);
-         viewInfo = (View) findViewById(R.id.displayPaneViewProfile);
-         infoName = (TextView) viewInfo.findViewById(R.id.infoName);
-         infoEmail = (TextView) viewInfo.findViewById(R.id.infoEmail);
-         infoPhone = (TextView) viewInfo.findViewById(R.id.infoPhone);
-         infoDiseases = (TextView) viewInfo.findViewById(R.id.infoDiseases);
-         infoParameters = (TextView) viewInfo.findViewById(R.id.infoParameters);
+         createProfile = (View) findViewById(R.id.displayPaneCreateProfile);
+         saveChecks = (Button)createProfile.findViewById(R.id.save);
+         asthma = (CheckBox) createProfile.findViewById(R.id.asthmaCheck);
+         allergy = (CheckBox) createProfile.findViewById(R.id.dustAllergyCheck);
+         viewDetails = (Button)createProfile.findViewById(R.id.viewDetails);
+         showDetails = (TextView) createProfile.findViewById(R.id.showDetails);
+         setParam = (View) findViewById(R.id.displayPaneSetParameters);
+         saveParameters = (Button) setParam.findViewById(R.id.buttonSave);
+         temperatureCheck = (CheckBox) setParam.findViewById(R.id.temperatureCheck);
+         humidityCheck = (CheckBox) setParam.findViewById(R.id.humidityCheck);
+         gasCheck = (CheckBox) setParam.findViewById(R.id.gasCheck);
+         dustCheck = (CheckBox) setParam.findViewById(R.id.dustCheck);
+         smokeCheck = (CheckBox) setParam.findViewById(R.id.smokeCheck);
+         viewProfile = (View) findViewById(R.id.displayPaneViewProfile);
+         infoName = (TextView) viewProfile.findViewById(R.id.infoName);
+         infoEmail = (TextView) viewProfile.findViewById(R.id.infoEmail);
+         infoPhone = (TextView) viewProfile.findViewById(R.id.infoPhone);
+         infoDiseases = (TextView) viewProfile.findViewById(R.id.infoDiseases);
+         infoParameters = (TextView) viewProfile.findViewById(R.id.infoParameters);
+         history = (View) findViewById(R.id.historyPane);
+         infoHistory = (TextView) history.findViewById(R.id.historyInfo);
 
          //preluam datele de la utilizatorul care este logat
          rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -126,7 +117,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
                                                                       User userProfile = snapshot.getValue(User.class);
                                                                       if (userProfile != null) {
                                                                           name = userProfile.fullname;
-                                                                          welcome.setText("Welcome, " + name + "!");
+                                                                          welcome.setText("                Welcome, " + name + "!");
                                                                           checkExistingDiseases = userProfile.diseases;
                                                                           checkExistingParameters = userProfile.parameters;
                                                                           if (!checkExistingDiseases.equals("")){
@@ -178,14 +169,6 @@ public class WelcomeUserActivity extends AppCompatActivity {
                                                               });
 
 
-         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
-         gaugeView.setRotateDegree(degree);
-         startRunning();
-
-         createProfile = (View) findViewById(R.id.displayPaneCreateProfile);
-         viewProfile = (View) findViewById(R.id.displayPaneViewProfile);
-         setParam = (View) findViewById(R.id.displayPaneSetParameters);
-
         final Button buttonCreateProfile = findViewById(R.id.buttonCreateProfile);
         buttonCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +176,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
                 createProfile.setVisibility(View.VISIBLE);
                 viewProfile.setVisibility(View.INVISIBLE);
                 setParam.setVisibility(View.INVISIBLE);
+                history.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -205,8 +189,9 @@ public class WelcomeUserActivity extends AppCompatActivity {
                  createProfile.setVisibility(View.INVISIBLE);
                  viewProfile.setVisibility(View.VISIBLE);
                  setParam.setVisibility(View.INVISIBLE);
+                 history.setVisibility(View.INVISIBLE);
 
-                 rootRef2.child(userID2).addListenerForSingleValueEvent(new ValueEventListener() {
+                 rootRef2.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                      @Override
                      public void onDataChange(@NonNull DataSnapshot snapshot) {
                          User userProfile2 = snapshot.getValue(User.class);
@@ -214,8 +199,23 @@ public class WelcomeUserActivity extends AppCompatActivity {
                              infoName.setText(userProfile2.fullname);
                              infoEmail.setText(userProfile2.email);
                              infoPhone.setText(userProfile2.phone);
-                             infoDiseases.setText(userProfile2.diseases);
-                             infoParameters.setText(userProfile2.parameters);
+                             String[] diseasesWithoutComma = userProfile2.diseases.split(",", 3);
+                             String diseases = "";
+                             int i;
+                             for(i=0;i<diseasesWithoutComma.length;i++){
+                                 if(!diseasesWithoutComma[i].equals("")) {
+                                     diseases += diseasesWithoutComma[i]+ "\n";
+                                 }
+                             }
+                             infoDiseases.setText(diseases);
+                             String[] parametersWithoutComma = userProfile2.parameters.split(",", 6);
+                             String parameters = "";
+                             for(i=0;i<parametersWithoutComma.length;i++){
+                                 if(!parametersWithoutComma[i].equals("")) {
+                                     parameters += parametersWithoutComma[i]+ "\n";
+                                 }
+                             }
+                             infoParameters.setText(parameters);
                              checkExistingDiseases = userProfile2.diseases;
                              checkExistingParameters = userProfile2.parameters;
                              if (checkExistingDiseases.equals("")){
@@ -242,6 +242,7 @@ public class WelcomeUserActivity extends AppCompatActivity {
                  createProfile.setVisibility(View.INVISIBLE);
                  viewProfile.setVisibility(View.INVISIBLE);
                  setParam.setVisibility(View.VISIBLE);
+                 history.setVisibility(View.INVISIBLE);
              }
          });
 
@@ -258,8 +259,36 @@ public class WelcomeUserActivity extends AppCompatActivity {
          buttonViewHistory.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(WelcomeUserActivity.this, RegistrationActivity.class);
-                 startActivity(intent);
+                 createProfile.setVisibility(View.INVISIBLE);
+                 viewProfile.setVisibility(View.INVISIBLE);
+                 setParam.setVisibility(View.INVISIBLE);
+                 history.setVisibility(View.VISIBLE);
+                 allMeasurements = "";
+                 rootRef3.child(userID).child("history").addListenerForSingleValueEvent(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                         if (snapshot.getValue() == null) {
+                             infoHistory.setText("Please go to the measurements page to can achieve some data to save here! -_- ");
+                         return;
+                         }
+                             for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                 Parameters retrieveInfo = postSnapshot.getValue(Parameters.class);
+                                 allMeasurements += "Date: " + postSnapshot.getKey() + "\n\n";
+                                 allMeasurements += "Temperature: " + retrieveInfo.temperature + "\n";
+                                 allMeasurements += "Humidity: " + retrieveInfo.humidity + "\n";
+                                 allMeasurements += "Gas: " + retrieveInfo.gas + "\n";
+                                 allMeasurements += "Dust: " + retrieveInfo.dust + "\n";
+                                 allMeasurements += "Smoke: " + retrieveInfo.smoke + "\n\n";
+                             }
+                             infoHistory.setText(allMeasurements);
+
+                     }
+
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError error) {
+                         Toast.makeText(WelcomeUserActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                     }
+                 });
              }
          });
 
@@ -354,87 +383,13 @@ private void hideNavigationBar(){
                  );
 }
 
-    private void resetGauges() {
-        new Thread() {
-            public void run() {
-                for (int i = 0; i < 300; i++) {
-                    try {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                sweepAngleControl--;
-                                sweepAngleFirstChart = 1;
-                                sweepAngleSecondChart = 1;
-                                sweepAngleThirdChart = 1;
-
-                                degree--;
-                                gaugeView.setSweepAngleFirstChart(0);
-                                gaugeView.setSweepAngleSecondChart(0);
-                                gaugeView.setSweepAngleThirdChart(0);
-                                gaugeView.setRotateDegree(degree);
-                            }
-                        });
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (i == 299) {
-                        resetMode = false;
-                        canReset = false;
-                    }
-
-                }
-            }
-        }.start();
-    }
-
-    private void startRunning() {
-        new Thread() {
-            public void run() {
-                for (int i = 0; i < 300; i++) {
-                    try {
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                degree++;
-                                sweepAngleControl++;
-                                if (degree < 45) {
-                                    gaugeView.setRotateDegree(degree);
-                                }
-
-                                if (sweepAngleControl <= 90) {
-                                    sweepAngleFirstChart++;
-                                    gaugeView.setSweepAngleFirstChart(sweepAngleFirstChart);
-                                } else if (sweepAngleControl <= 180) {
-                                    sweepAngleSecondChart++;
-                                    gaugeView.setSweepAngleSecondChart(sweepAngleSecondChart);
-                                } else if (sweepAngleControl <= 270) {
-                                    sweepAngleThirdChart++;
-                                    gaugeView.setSweepAngleThirdChart(sweepAngleThirdChart);
-                                }
-
-                            }
-                        });
-                        Thread.sleep(15);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (i == 299) {
-                        isInProgress = false;
-                        canReset = true;
-                    }
-
-                }
-            }
-        }.start();
-    }
     public void onBackPressed() {
-
-        Intent a = new Intent(WelcomeUserActivity.this, WelcomeUserActivity.class);
-        startActivity(a);
+        if(createProfile.getVisibility()==View.VISIBLE){
+            this.finishAffinity();
+        }else {
+            Intent a = new Intent(WelcomeUserActivity.this, WelcomeUserActivity.class);
+            startActivity(a);
+        }
     }
 }
 

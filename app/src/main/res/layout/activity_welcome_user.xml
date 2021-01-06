@@ -65,5 +65,14 @@
         android:background="#FF94CD6C"
         android:visibility="gone"/>
 
+    <include
+        android:id="@+id/historyPane"
+        layout="@layout/history_pane"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
 
 </RelativeLayout>

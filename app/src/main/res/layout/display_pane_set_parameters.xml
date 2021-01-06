@@ -14,15 +14,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="36sp"
-        android:text="Select parameters to be measured:"
+        android:layout_marginTop="28dp"
+        android:text="    Select parameters to be \n       measured:"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
 
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.2"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -98,7 +96,7 @@
 
         android:layout_width="88sp"
         android:layout_height="wrap_content"
-
+        android:background="@color/pearlGray"
         android:text="Save"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/black"
