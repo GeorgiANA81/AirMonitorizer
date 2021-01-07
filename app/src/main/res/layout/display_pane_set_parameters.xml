@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="28dp"
-        android:text="    Select parameters to be \n       measured:"
+        android:text="    Select parameters to be \n    measured:"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
 

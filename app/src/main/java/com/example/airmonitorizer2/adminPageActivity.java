@@ -89,7 +89,6 @@ public class adminPageActivity extends AppCompatActivity {
                                 allUsersInfo += "Name: "+ databaseUser.fullname+"\n";
                                 allUsersInfo += "Phone: "+ databaseUser.phone+"\n";
                                 allUsersInfo += "Email: "+ databaseUser.email+"\n";
-                                allUsersInfo += "Admin: "+ databaseUser.admin+"\n";
                                 allUsersInfo += "Diseases: "+ databaseUser.diseases+"\n";
                                 allUsersInfo += "Parameters: "+ databaseUser.parameters+"\n\n";
                             }

@@ -197,8 +197,16 @@ public class MainActivity extends AppCompatActivity {
                                             if(h != null) {
                                                 min = info[1].compareTo(h.min);
                                                 max = info[1].compareTo(h.max);
-                                            if((allergy||asthma) && !info[3].equals("0.00")){
+                                            if((allergy||asthma) && !info[3].equals("0.00")&&(!info[4].equals("0"))&&(!info[2].equals("0"))){
+                                                notificationText.setText("Be careful! There is dust, smoke and gas and can affect you!");
+                                                gauge.setImageResource(R.drawable.bad);
+                                            }
+                                            else if((allergy||asthma) && !info[3].equals("0.00")){
                                                 notificationText.setText("Be careful! There is dust and can affect you!");
+                                                gauge.setImageResource(R.drawable.bad);
+                                            }
+                                            else if(asthma && (!info[4].equals("0"))&&(!info[2].equals("0"))){
+                                                notificationText.setText("Be careful! There is smoke and gas and can affect you!");
                                                 gauge.setImageResource(R.drawable.bad);
                                             }
                                             else if(asthma && (!info[4].equals("0"))){
