@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/displayPane"
+    android:id="@+id/displayPaneSetParameters"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="#FF94CD6C"
@@ -14,15 +14,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="36sp"
-        android:text="Select parameters to be measured:"
+        android:layout_marginTop="28dp"
+        android:text="    Select parameters to be \n       measured:"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
 
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.2"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,53 +42,53 @@
         android:id="@+id/humidityCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="humidity"
         android:checked="false"
+        android:text="humidity"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.172"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/temperatureCheck"/>
+        app:layout_constraintTop_toBottomOf="@+id/temperatureCheck" />
 
     <CheckBox
         android:id="@+id/gasCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="gas"
         android:checked="false"
+        android:text="gas"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.149"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/humidityCheck"/>
+        app:layout_constraintTop_toBottomOf="@+id/humidityCheck" />
 
     <CheckBox
         android:id="@+id/dustCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="dust"
         android:checked="false"
+        android:text="dust"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.152"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gasCheck"/>
+        app:layout_constraintTop_toBottomOf="@+id/gasCheck" />
 
     <CheckBox
         android:id="@+id/smokeCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="smoke"
+        android:layout_width="86dp"
+        android:layout_height="38dp"
         android:checked="false"
+        android:text="smoke"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.172"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dustCheck"/>
+        app:layout_constraintTop_toBottomOf="@+id/dustCheck" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -98,37 +96,19 @@
 
         android:layout_width="88sp"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="156sp"
+        android:background="@color/pearlGray"
         android:text="Save"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/background_light"
+        android:textColor="@color/black"
 
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.0"
-
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/smokeCheck" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonSignOut"
-        style="@style/Widget.AppCompat.Button"
-
-        android:layout_width="88sp"
-        android:layout_height="wrap_content"
-
-        android:text="Sign Out"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/background_light"
-
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.0"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSave"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

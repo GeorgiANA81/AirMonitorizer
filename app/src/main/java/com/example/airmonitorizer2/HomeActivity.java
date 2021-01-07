@@ -23,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(new Intent(this,RegistrationActivity.class));
     }
 
-    public void openWelcomeUserPage(View view) {
-        startActivity(new Intent(this, WelcomeUserActivity.class));
+    public void onBackPressed() {
+        this.finishAffinity();
     }
 }

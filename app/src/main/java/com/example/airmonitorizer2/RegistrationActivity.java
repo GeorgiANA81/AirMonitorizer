@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +27,15 @@ import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
+
+        progress = (ProgressBar) findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
         //button to login page
         TextView login = (TextView)findViewById(R.id.lnkLogin);
         login.setPaintFlags(login.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
@@ -114,6 +119,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                progress.setVisibility(View.VISIBLE);
                                 if(task.isSuccessful()){
                                    User user = new User(name, email, phone);
 
@@ -124,8 +130,9 @@ public class RegistrationActivity extends AppCompatActivity {
                                        public void onComplete(@NonNull Task<Void> task) {
                                            if(task.isSuccessful()){
 //                                               redirect to user profile
+                                               progress.setVisibility(View.GONE);
                                                Toast.makeText(RegistrationActivity.this, "Congratulations!", Toast.LENGTH_LONG).show();
-                                               startActivity(new Intent(RegistrationActivity.this, HomeActivity.class));
+                                               startActivity(new Intent(RegistrationActivity.this, WelcomeUserActivity.class));
                                            }
                                            else{
                                                Toast.makeText(RegistrationActivity.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
@@ -134,6 +141,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                    });
                                 }
                                 else{
+                                    progress.setVisibility(View.GONE);
                                     try
                                     {
                                         throw task.getException();

@@ -1,5 +1,6 @@
 package com.example.airmonitorizer2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,11 +20,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
@@ -38,8 +52,19 @@ public class MainActivity extends AppCompatActivity {
     public static ConnectedThread connectedThread;
     public static CreateConnectThread createConnectThread;
 
+
     private final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
     private final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
+
+
+    private DatabaseReference rootRef, rootRef2, ref;
+    private FirebaseUser user;
+    private String userID;
+    private boolean asthma, allergy;
+    private int min, max;
+    private String formattedDate;
+    private Date c;
+    private SimpleDateFormat df;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +76,28 @@ public class MainActivity extends AppCompatActivity {
         final Toolbar toolbar = findViewById(R.id.toolbar);
         final ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        final TextView textViewInfo = findViewById(R.id.textViewInfo);
         final Button buttonToggle = findViewById(R.id.buttonToggle);
         buttonToggle.setEnabled(false);
-        final ImageView imageView = findViewById(R.id.imageView);
-        imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
+        final TextView infoTemperature = findViewById(R.id.infoTemperature);
+        final TextView infoHumidity = findViewById(R.id.infoHumidity);
+        final TextView infoDust = findViewById(R.id.infoDust);
+        final TextView infoGas = findViewById(R.id.infoGas);
+        final TextView infoSmoke = findViewById(R.id.infoSmoke);
+        final Button buttonReturn = findViewById(R.id.buttonReturn);
+        final TextView notificationText = findViewById(R.id.notificationText);
+        final ImageView gauge = findViewById(R.id.imageView);
+
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        rootRef  = FirebaseDatabase.getInstance().getReference("Users");
+        rootRef2  = FirebaseDatabase.getInstance().getReference("asthma");
+        ref = FirebaseDatabase.getInstance().getReference("Users");
+        userID = user.getUid();
+
+        c = Calendar.getInstance().getTime();
+        df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        formattedDate = df.format(c);
+
 
         // If a bluetooth device has been selected from SelectDeviceActivity
         deviceName = getIntent().getStringExtra("deviceName");
@@ -103,18 +145,91 @@ public class MainActivity extends AppCompatActivity {
 
                     case MESSAGE_READ:
                         String arduinoMsg = msg.obj.toString(); // Read message from Arduino
-//                        switch (arduinoMsg.toLowerCase()){
-//                            case "led is turned on":
-//                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOn));
-//                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
-//                                break;
-//                            case "led is turned off":
-//                                imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
-//                                textViewInfo.setText("Arduino Message : " + arduinoMsg);
-//                                break;
-//                        }
-                        imageView.setBackgroundColor(getResources().getColor(R.color.colorOff));
-                        textViewInfo.setText("Arduino Message : " + arduinoMsg);
+                        String[] info = arduinoMsg.split(",", 6);
+                        rootRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User userProfile = snapshot.getValue(User.class);
+                                if (userProfile != null) {
+                                    String checkExistingDiseases = userProfile.diseases;
+                                    asthma = false;
+                                    allergy = false;
+                                    if (!checkExistingDiseases.equals("")){
+                                        String[] d = checkExistingDiseases.split(",",3);
+                                        for(String each:d){
+                                            if(each.equals("Asthma")){
+                                                asthma = true;
+                                            }
+                                            else if(each.equals("Dust allergy")){
+                                                allergy = true;
+                                            }
+                                        }
+                                    }
+                                    Parameters parametersInfo = new Parameters(info[0], info[1], info[2], info[3], info[4]);
+                                    ref.child(userID).child("history").child(formattedDate).setValue(parametersInfo);
+
+                                    String checkExistingParameters = userProfile.parameters;
+                                    if (!checkExistingParameters.equals("")){
+                                        String[] p = checkExistingParameters.split(",",6);
+                                        for(String each:p){
+                                            if(each.equals("Temperature")){
+                                                infoTemperature.setText(info[0]+"C");
+                                            }
+                                            else if(each.equals("Humidity")){
+                                                infoHumidity.setText(info[1]+"%");
+                                            }
+                                            else if(each.equals("Gas")){
+                                                infoGas.setText(info[2]+"ppm");
+                                            }
+                                            else if(each.equals("Dust")){
+                                                infoDust.setText(info[3]+"ppm");
+                                            }
+                                            else if(each.equals("Smoke")){
+                                                infoSmoke.setText(info[4]+"ppm");
+                                            }
+                                        }
+
+                                    }
+                                    rootRef2.child("Humidity").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            Humidity h = snapshot.getValue(Humidity.class);
+                                            if(h != null) {
+                                                min = info[1].compareTo(h.min);
+                                                max = info[1].compareTo(h.max);
+                                            if((allergy||asthma) && !info[3].equals("0.00")){
+                                                notificationText.setText("Be careful! There is dust and can affect you!");
+                                                gauge.setImageResource(R.drawable.bad);
+                                            }
+                                            else if(asthma && (!info[4].equals("0"))){
+                                                notificationText.setText("Be careful! There is smoke and can affect you!");
+                                                gauge.setImageResource(R.drawable.bad);
+                                            }
+                                            else if(asthma && (min<0||max>0)){
+                                                notificationText.setText("Be careful! Humidity is not good for you!");
+                                                gauge.setImageResource(R.drawable.bad);
+                                            }
+                                            else{
+                                                notificationText.setText("Everything looks good!");
+                                                gauge.setImageResource(R.drawable.good);
+                                            }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(MainActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(MainActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                            }
+                        });
                         break;
                 }
             }
@@ -130,28 +245,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Button to ON/OFF LED on Arduino Board
         buttonToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String cmdText = null;
-                String btnState = buttonToggle.getText().toString().toLowerCase();
-                switch (btnState){
-                    case "turn on":
-                        buttonToggle.setText("Turn Off");
-                        // Command to turn on LED on Arduino. Must match with the command in Arduino code
-                        cmdText = "t";
-                        break;
-                    case "turn off":
-                        buttonToggle.setText("Turn On");
-                        // Command to turn off LED on Arduino. Must match with the command in Arduino code
-                        cmdText = "h";
-                        break;
-                }
-                // Send command to Arduino board
+                cmdText = "y";
                 connectedThread.write(cmdText);
             }
         });
+
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WelcomeUserActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     /* ============================ Thread to Create Bluetooth Connection =================================== */
@@ -293,9 +403,9 @@ public class MainActivity extends AppCompatActivity {
         if (createConnectThread != null){
             createConnectThread.cancel();
         }
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent a = new Intent(MainActivity.this, WelcomeUserActivity.class);
         startActivity(a);
     }
+
+
 }

@@ -12,6 +12,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,14 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference rootRef;
     private FirebaseUser user;
     private String userID, admin;
+    private ProgressBar progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        progress = (ProgressBar) findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
         TextView register = (TextView)findViewById(R.id.lnkRegister);
         register.setPaintFlags(register.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         register.setMovementMethod(LinkMovementMethod.getInstance());
@@ -92,13 +97,14 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 if(password.length() < 6){
-                    editText1.setError("Minimum password length should be 6 characters!");
-                    editText1.requestFocus();
+                    editText2.setError("Minimum password length should be 6 characters!");
+                    editText2.requestFocus();
                     return;
                 }
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progress.setVisibility(View.VISIBLE);
                         if(task.isSuccessful()){
                             //redirect to user profile
                             user = FirebaseAuth.getInstance().getCurrentUser();
@@ -114,26 +120,30 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if(admin.equals("yes")){
                                         //admin profile
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        progress.setVisibility(View.GONE);
+                                        startActivity(new Intent(LoginActivity.this, adminPageActivity.class));
                                     }
                                     else{
                                         //user profile
-                                        startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+                                        progress.setVisibility(View.GONE);
+                                        startActivity(new Intent(LoginActivity.this, WelcomeUserActivity.class));
                                     }
                                 }
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
+                                    progress.setVisibility(View.GONE);
                                     Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
                                 }
                             });
 
                         }
                         else {
+                            progress.setVisibility(View.GONE);
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthInvalidUserException invalidEmail) {
                                 Toast.makeText(LoginActivity.this, "You entered a wrong email!", Toast.LENGTH_LONG).show();
-                            } catch (FirebaseAuthInvalidCredentialsException invalidEmail) {
+                            } catch (FirebaseAuthInvalidCredentialsException invalidPassword) {
                                 Toast.makeText(LoginActivity.this, "You entered a wrong password!", Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
                                 Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials!", Toast.LENGTH_LONG).show();

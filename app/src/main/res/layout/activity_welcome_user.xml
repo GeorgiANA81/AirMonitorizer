@@ -12,9 +12,9 @@
         android:id="@+id/commandButtons"
         layout="@layout/command_buttons"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="702dp"
         android:layout_below="@+id/titleBar"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="0dp"
         android:background="#FFA9D873"
         tools:showIn="@layout/activity_welcome_user" />
 
@@ -42,7 +42,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/titleBar"
         android:layout_toRightOf="@+id/commandButtons"
-        android:background="#FF94CD6C" />
+        android:background="#FF94CD6C"
+        android:visibility="visible"/>
 
     <include
         android:id="@+id/displayPaneViewProfile"
@@ -51,7 +52,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/titleBar"
         android:layout_toRightOf="@+id/commandButtons"
-        android:background="#FF94CD6C" />
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/displayPaneSetParameters"
@@ -60,6 +62,17 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/titleBar"
         android:layout_toRightOf="@+id/commandButtons"
-        android:background="#FF94CD6C" />
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/historyPane"
+        layout="@layout/history_pane"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_toRightOf="@+id/commandButtons"
+        android:background="#FF94CD6C"
+        android:visibility="gone"/>
 
 </RelativeLayout>

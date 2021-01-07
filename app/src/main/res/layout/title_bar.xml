@@ -11,9 +11,9 @@
 
     <TextView
         android:id="@+id/welcomeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Welcome, Pop Alexandru!"
+        android:layout_width="402dp"
+        android:layout_height="51dp"
+        android:text="Welcome!"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

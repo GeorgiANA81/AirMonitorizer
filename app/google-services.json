@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "789189214914",
+    "firebase_url": "https://proiectchs-89150.firebaseio.com",
+    "project_id": "proiectchs-89150",
+    "storage_bucket": "proiectchs-89150.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789189214914:android:08a945569dd27266a9715b",
+        "android_client_info": {
+          "package_name": "com.example.airmonitorizer2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789189214914-qo18eqdpkugcgm691llkuc5o0566cvrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBQXk-UHr135Zy2_zslHVOtqD_4cNn4bQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789189214914-qo18eqdpkugcgm691llkuc5o0566cvrg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
